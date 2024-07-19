@@ -73,6 +73,6 @@ module.exports.handleAuthenKey = async function (req, res) {
 
 module.exports.bannerKey = async function (req, res) {
     const { hwid } = req.body;
-    BlackList.create({ hwid: hwid });
+    await BlackList.create({ hwid: hwid });
     res.status(200).json({ status: 200, message: "Banner" });
 }
