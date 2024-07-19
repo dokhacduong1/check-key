@@ -1,5 +1,5 @@
 const BlackList = require("../../../models/black_list_pubg.model.js");
-module.exports.checkKey = (req, res, next) => {
+module.exports.checkKey = async (req, res, next) => {
 
     const { key, hwid_c } = req.body;
     if (!key) {
@@ -8,7 +8,7 @@ module.exports.checkKey = (req, res, next) => {
     if (!hwid_c) {
         return res.status(400).json({ message: "Hwid is required" });
     }
-    const checkBlackList = BlackList.findOne({ where: { hwid: hwid_c }, raw: true });
+    const checkBlackList = await BlackList.findOne({ where: { hwid: hwid_c }, raw: true });
     if (checkBlackList) return res.status(403).json({ status:403,message: "Device is banner" });
     next();
 }
