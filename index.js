@@ -13,7 +13,7 @@ const port = process.env.PORT;
 
 //Tạo ra trang 404
 app.get("*", (req, res) => {
-    res.status(404).json({error:"Api Không Tồn Tại!"});
+    res.status(404).json({error:"Api not found"});
 });
 
 
