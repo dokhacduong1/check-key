@@ -1,5 +1,6 @@
 const express = require("express");
 var bodyParser = require('body-parser')
+const rateLimit = require("express-rate-limit");
 var cors = require('cors')
 const routesV1 = require("./api/v1/routes/index.routes");
 //Import cấu hình file .env

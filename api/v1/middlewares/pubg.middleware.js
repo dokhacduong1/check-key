@@ -7,7 +7,7 @@ module.exports.handleAuthenKey = async (req, res, next) => {
             resolve({status: true, data: data});
         });
     });
-    console.log(data);
+
     if(data.data.type_key === "free") return res.status(200).json({ status: 200, message: "Key is free valid" });
     if(new Date(data.data.expires_at)< new Date()) return res.status(400).json({ status: 400, message: "Token is expired" });
     next();

@@ -1,6 +1,6 @@
 const BlackList = require("../../../models/black_list_pubg.model.js");
 module.exports.checkKey = async (req, res, next) => {
-
+    console.log(req);
     const { key, hwid_c } = req.body;
     if (!key) {
         return res.status(400).json({ message: "Key is required" });
