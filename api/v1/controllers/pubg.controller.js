@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const generateToken = (data) => {
     if(data?.id) delete data.id;
+
     return jwt.sign(data, process.env.SECRET_KEY, { expiresIn: 60 * 60 * 24 * 1 });
 };
 
@@ -21,7 +22,7 @@ const getKeyData = async (key) => {
     });
 }
 
-const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id) => {
+const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id,data=[]) => {
     if (status === "banner") return { status: 400, message: "Key is banner" };
     if (status === "active") {
         if (hwid === hwid_c) {
@@ -29,7 +30,9 @@ const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id) => {
                 await ListKey.destroy({ where: { id: id } });
                 return { status: 400, message: "Key is expired" };
             }
-            return { status: 200, message: "Key is valid" };
+         
+            const token = generateToken(data);
+            return { status: 200, message: "Key is valid", token: token };
         } else {
             return { status: 401, message: "Key is active on another device" };
         }
@@ -47,7 +50,7 @@ module.exports.checkKey = async function (req, res) {
         const { id, type_key, expires_at, hwid, status } = data;
         let token = "";
 
-        const keyStatus = await checkKeyStatus(status, hwid, hwid_c, expires_at, id);
+        const keyStatus = await checkKeyStatus(status, hwid, hwid_c, expires_at, id,data);
         if (keyStatus) return res.status(keyStatus.status).json(keyStatus);
 
         if (type_key === "free") {
