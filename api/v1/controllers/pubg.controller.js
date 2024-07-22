@@ -22,7 +22,7 @@ const getKeyData = async (key) => {
     });
 }
 
-const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id,data=[]) => {
+const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id,data=[],version="") => {
     if (status === "banner") return { status: 400, message: "Key is banner" };
     if (status === "active") {
         if (hwid === hwid_c) {
@@ -32,7 +32,8 @@ const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id,data=[]) => {
             }
          
             const token = generateToken(data);
-            return { status: 200, message: "Key is valid", token: token };
+            
+            return { status: 200, message: "Key is valid", token: token,version:version };
         } else {
             return { status: 401, message: "Key is active on another device" };
         }
@@ -42,6 +43,7 @@ const checkKeyStatus = async (status, hwid, hwid_c, expires_at, id,data=[]) => {
 
 module.exports.checkKey = async function (req, res) {
     try {
+        const version = req["version"];
         const { key, hwid_c } = req.body;
         const data = await getKeyData(key);
 
@@ -50,12 +52,12 @@ module.exports.checkKey = async function (req, res) {
         const { id, type_key, expires_at, hwid, status } = data;
         let token = "";
 
-        const keyStatus = await checkKeyStatus(status, hwid, hwid_c, expires_at, id,data);
+        const keyStatus = await checkKeyStatus(status, hwid, hwid_c, expires_at, id,data,version);
         if (keyStatus) return res.status(keyStatus.status).json(keyStatus);
 
         if (type_key === "free") {
             token = generateToken(data);
-            return res.status(200).json({ status: 200, message: "Key is free valid", token: token });
+            return res.status(200).json({ status: 200, message: "Key is free valid", token: token,version:version });
         }
 
         const dayValid = parseInt(type_key.split("_")[0]);
@@ -64,8 +66,9 @@ module.exports.checkKey = async function (req, res) {
         const updatedData = await updateKey(hwid_c, expiryTime, id);
 
         token = generateToken(updatedData);
-        res.status(200).json({ status: 200, message: "Key is valid", token: token });
+        res.status(200).json({ status: 200, message: "Key is valid", token: token,version:version });
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: "Internal server error" });
     }
 }

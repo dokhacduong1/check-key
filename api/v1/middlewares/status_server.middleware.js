@@ -12,6 +12,6 @@ module.exports.serverStatus = async (req, res, next) => {
         const status = !server_info ? 400 : 503;
         return res.status(status).json({ status, message: "Server is inactive" });
     }
-
+    req["version"] = server_info.version;
     next();
 }
