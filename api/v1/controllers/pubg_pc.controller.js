@@ -1,6 +1,6 @@
-const sequelize = require("../../../configs/database_pubg.config");
-const ListKey = require("../../../models/pubg_mobile_android/list_key_pubg.model.js");
-const BlackList = require("../../../models/pubg_mobile_android/black_list_pubg.model.js");
+
+const ListKey = require("../../../models/pubg_mobile_pc/list_key_pubg.model.js");
+const BlackList = require("../../../models/pubg_mobile_pc/black_list_pubg.model.js");
 const jwt = require("jsonwebtoken");
 
 const generateToken = (data) => {
@@ -61,6 +61,7 @@ module.exports.checkKey = async function (req, res) {
         }
 
         const dayValid = parseInt(type_key.split("_")[0]) ?? 1;
+        //1_day
         const currentTime = new Date();
         const expiryTime = new Date(currentTime);
         expiryTime.setDate(currentTime.getDate() + dayValid); 

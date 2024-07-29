@@ -1,6 +1,6 @@
 
 const DataTypes = require('sequelize').DataTypes;
-const sequelize = require('../configs/database_pubg.config');
+const sequelize = require('../../configs/database_pubg_pc.config');
 // {
 //     id: 300737,
 //     key: '1_DAY834446DPXSHBAJ',

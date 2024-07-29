@@ -7,7 +7,7 @@
 
 
 const DataTypes = require('sequelize').DataTypes;
-const sequelize = require('../configs/database_pubg.config');
+const sequelize = require('../../configs/database_pubg_pc.config');
 
 const ServerInfo = sequelize.define(
   "server_info",

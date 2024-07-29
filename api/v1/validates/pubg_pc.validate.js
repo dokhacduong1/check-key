@@ -1,4 +1,4 @@
-const BlackList = require("../../../models/pubg_mobile_android/black_list_pubg.model.js");
+const BlackList = require("../../../models/pubg_mobile_pc/black_list_pubg.model.js");
 module.exports.checkKey = async (req, res, next) => {
 
     const { key, hwid_c } = req.body;
