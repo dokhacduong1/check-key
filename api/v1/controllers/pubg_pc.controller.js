@@ -61,7 +61,6 @@ module.exports.checkKey = async function (req, res) {
         }
 
         const dayValid = parseInt(type_key.split("_")[0]) ?? 1;
-        //1_day
         const currentTime = new Date();
         const expiryTime = new Date(currentTime);
         expiryTime.setDate(currentTime.getDate() + dayValid); 
