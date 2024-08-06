@@ -15,12 +15,13 @@ const port = process.env.PORT;
 
 //Tạo ra trang 404
 app.get("*", (req, res) => {
-    res.status(404).json({error:"Api not found"});
+    const endpoints = listEndpoints(app);
+
+
+    res.status(404).json({error:endpoints});
 });
 
-const endpoints = listEndpoints(app);
 
-console.log(endpoints);
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
