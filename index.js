@@ -15,10 +15,7 @@ const port = process.env.PORT;
 
 //Tạo ra trang 404
 app.get("*", (req, res) => {
-    const endpoints = listEndpoints(app);
-
-
-    res.status(404).json({error:endpoints});
+    res.status(404).json({error:"Api not found"});
 });
 
 
